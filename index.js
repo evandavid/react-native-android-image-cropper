@@ -33,11 +33,11 @@ const DEFAULT_OPTIONS = {
 }
 module.exports = {
     ...ImageCropperManager,
-    selectImage:function selectImage(options,callback){
+    editImage:function editImage(imageUri, options,callback){
         if (typeof options === 'function') {
             callback = options;
             options = {};
           }
-          return ImageCropperManager.selectImage({...DEFAULT_OPTIONS, ...options}, callback)
+          return ImageCropperManager.editImage(imageUri, {...DEFAULT_OPTIONS, ...options}, callback)
     }
 }

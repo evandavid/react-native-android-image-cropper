@@ -18,6 +18,7 @@ import com.ozdevcode.theartofdev.edmodo.utils.ResponseHelper;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.String;
 
 import static android.app.Activity.RESULT_OK;
 import static com.ozdevcode.theartofdev.edmodo.utils.MediaUtils.transferImageToGallery;
@@ -65,7 +66,7 @@ public class ImageCropperModule extends ReactContextBaseJavaModule implements Ac
   }
 
   @ReactMethod
-  public void selectImage(final ReadableMap options,final Callback callback) {
+  public void editImage(final String imageUri, final ReadableMap options,final Callback callback) {
     Activity currentActivity = getCurrentActivity();
 
     if (currentActivity == null)
@@ -105,7 +106,7 @@ public class ImageCropperModule extends ReactContextBaseJavaModule implements Ac
     CropImageView.CropShape cropShape = ((CropImageView.CropShape)CROPSHAPES.get(options.getString(CROPSHAPE_KEY))) != null ?
             (CropImageView.CropShape)CROPSHAPES.get(options.getString(CROPSHAPE_KEY)) : CropImageView.CropShape.RECTANGLE;
 
-    CropImage.activity()
+    CropImage.activity(imageUri)
             .setGuidelines(guidelines)
             .setActivityTitle(options.getString(TITLE_KEY))
             .setCropShape(cropShape)
@@ -136,10 +137,6 @@ public class ImageCropperModule extends ReactContextBaseJavaModule implements Ac
             .setFlipHorizontally(options.getBoolean(FLIP_HORIZONTALLY_KEY))
             .setFlipVertically(options.getBoolean(FLIP_VERTICALLY_KEY))
             .start(getCurrentActivity());
-
-
-
-
   }
 
 
