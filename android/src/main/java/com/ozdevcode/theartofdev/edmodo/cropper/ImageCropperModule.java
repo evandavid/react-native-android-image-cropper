@@ -18,7 +18,6 @@ import com.ozdevcode.theartofdev.edmodo.utils.ResponseHelper;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.String;
 
 import static android.app.Activity.RESULT_OK;
 import static com.ozdevcode.theartofdev.edmodo.utils.MediaUtils.transferImageToGallery;
@@ -106,7 +105,8 @@ public class ImageCropperModule extends ReactContextBaseJavaModule implements Ac
     CropImageView.CropShape cropShape = ((CropImageView.CropShape)CROPSHAPES.get(options.getString(CROPSHAPE_KEY))) != null ?
             (CropImageView.CropShape)CROPSHAPES.get(options.getString(CROPSHAPE_KEY)) : CropImageView.CropShape.RECTANGLE;
 
-    CropImage.activity(imageUri)
+    Uri imageUriAsUri = Uri.parse(imageUri);
+    CropImage.activity(imageUriAsUri)
             .setGuidelines(guidelines)
             .setActivityTitle(options.getString(TITLE_KEY))
             .setCropShape(cropShape)

@@ -40,6 +40,6 @@ repositories {
 }
 
 dependencies {
-    compile 'com.facebook.react:react-native:+'
-    compile 'com.theartofdev.edmodo:android-image-cropper:2.6.+'
+    implementation 'com.facebook.react:react-native:+'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.6.+'
 }
