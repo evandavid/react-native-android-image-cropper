@@ -15,6 +15,11 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.ozdevcode.theartofdev.edmodo.utils.ResponseHelper;
 
+import android.graphics.Bitmap; 
+import android.graphics.BitmapFactory;
+import android.provider.MediaStore;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -185,8 +190,9 @@ public class ImageCropperModule extends ReactContextBaseJavaModule implements Ac
     }else if(resultUri==null||result.getOriginalUri()==null){
       responseHelper.invokeResponse(callback);
     }else{
-      responseHelper.putString("uri",resultUri.toString());
-      responseHelper.putString("path",resultUri.getPath());
+      Uri compressedImage = resizeImage(resultUri);
+      responseHelper.putString("uri",compressedImage.toString());
+      responseHelper.putString("path",compressedImage.getPath());
       responseHelper.putString("originalUri",result.getOriginalUri().toString());
       responseHelper.putString("originalPath",result.getOriginalUri().getPath());
       responseHelper.invokeResponse(callback);
@@ -202,5 +208,21 @@ public class ImageCropperModule extends ReactContextBaseJavaModule implements Ac
 
   }
 
+  public Uri resizeImage(Uri imageUri) {
+    Bitmap b = BitmapFactory.decodeFile(imageUri.getPath());
+    int origWidth = b.getWidth();
+    int origHeight = b.getHeight();
+    final int destWidth = 1024;
 
+    if(origWidth > destWidth){
+        int destHeight = origHeight/( origWidth / destWidth ) ;
+        Bitmap b2 = Bitmap.createScaledBitmap(b, destWidth, destHeight, false);
+      
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        b2.compress(Bitmap.CompressFormat.JPEG, 80, bytes);
+        String path = MediaStore.Images.Media.insertImage(getReactApplicationContext().getContentResolver(), b2, "tempModuit", null);
+        return Uri.parse(path);
+    }
+    return imageUri;
+  }
 }
